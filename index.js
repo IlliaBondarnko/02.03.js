@@ -93,7 +93,7 @@ const users = [
 
 const calculateTotalBalance = users => {
     return users.map((user) => user.balance).reduce((acc, user) => {
-    return acc + user.amount;}, 0);
+    return acc + user}, 0);
 };
 
 console.log(calculateTotalBalance(users)); // 20916
@@ -103,7 +103,7 @@ console.log(calculateTotalBalance(users)); // 20916
 // Масив імен всіх користувачів у яких є друг із зазначеним ім'ям.
 
 const getUsersWithFriend = (users, friendName) => {
-  return users.filter((user) => user.friends === friendName).map(user => user.name);
+  return users.filter((user) => user.friends.includes(friendName)).map((element) => element.name)
 };
 
 console.log(getUsersWithFriend(users, 'Briana Decker')); // [ 'Sharlene Bush', 'Sheree Anthony' ]
@@ -117,7 +117,10 @@ const getNamesSortedByFriendsCount = users => {
     // на зростання якщо a.age - b.age
     // на спадання якщо b.age - a.age
     // якщо рівні або 0 їх порядок значення не має будуть повернені підряд(жодної різниці)
-    const sortByFriendsAmount = (a, b) => b.age - a.age;
+    const newUsers = [...users];
+    const sortByFriendsAmount = (a, b) => a.friends.length - b.friends.length;
+    const objectsSorted = newUsers.sort(sortByFriendsAmount);
+    return objectsSorted.map((element) => element.name)
 };
 
 console.log(getNamesSortedByFriendsCount(users));
@@ -128,21 +131,12 @@ console.log(getNamesSortedByFriendsCount(users));
 // Отримати масив всіх умінь всіх користувачів (поле skills), при цьому не має бути повторюваних умінь і вони повинні бути відсортовані в алфавітному порядку.
 
 const getSortedUniqueSkills = users => {
-    // const arr = []
-    // users.forEach((element) => {
-    //     if (arr.includes(element.skills) === false) {
-    //         arr.push(element.skills)
-    //     }
-    // });
-    // arr.forEach((element) => {
-    //     console.log(element)
-    // })
-    // console.log()
-    const allSkillSets = console.log(users.map(user => user.skills))
-    const allSkills = allSkillSets.reduce((acc, skills) => {return acc.concat(skills);
+    const allSkills = users.reduce((acc, human) => {
+        return acc.concat(human.skills);
     }, []);
-    
-    console.log(allSkills.sort())
+    const newArray = [...new Set(allSkills)]
+    const sortedNewArray = newArray.sort()
+    return sortedNewArray
 };
 
 console.log(getSortedUniqueSkills(users));
